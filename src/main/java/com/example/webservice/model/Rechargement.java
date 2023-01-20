@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 
 @Getter
+
 @Setter
 @NoArgsConstructor
 @Entity
@@ -17,7 +18,8 @@ public class Rechargement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_rechargement;
+    @Column(name = "id_rechargement")
+    private int id_rechargement;
 
     @Column(name = "valeur")
     private double valeur;
@@ -26,6 +28,6 @@ public class Rechargement {
     private int id_utilisateur;
 
     @Column(name = "statut")
-    private int statut;
+    private int statut =0;
 
 }

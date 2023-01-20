@@ -2,19 +2,28 @@ package com.example.webservice.controller;
 
 import com.example.webservice.TpWsApplication;
 import com.example.webservice.connection.ConnectDB;
+import com.example.webservice.exception.CategorieNotFoundException;
+import com.example.webservice.model.Manao_enchere;
 import com.example.webservice.model.Participant_enchere;
+import com.example.webservice.repository.Manao_enchereRepository;
+import com.example.webservice.repository.ParticipantEnchereRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins= "*", maxAge = 3600)
 @RequestMapping("/api/v1/participant_enchere")
 
 public class ParticipantEnchereController {
+    @Autowired
+    private ParticipantEnchereRepository pe;
 
-    @GetMapping("/list")
+   /* @GetMapping("/list")
     public ArrayList<Participant_enchere> getParticipantEnchere() throws SQLException {
         ArrayList<Participant_enchere> pe = new ArrayList<>();
         ConnectDB postgreSQL = TpWsApplication.getPostgreSQL();
@@ -49,6 +58,17 @@ public class ParticipantEnchereController {
         finally {
             if (stmt!=null) stmt.close();
         }
+    }*/
+
+    @GetMapping("/list/{id}")
+    public ResponseEntity<Participant_enchere> getParticipant(@PathVariable Integer id){
+        Participant_enchere r=pe.findById(id).orElseThrow(() -> new CategorieNotFoundException(("Categorie not exist with id :" + id)));
+        return ResponseEntity.ok(r);
+    }
+    @GetMapping("/list")
+    public ResponseEntity <List<Participant_enchere>> getAllParticipant() {
+        List<Participant_enchere> cat= pe.findAll();
+        return ResponseEntity.ok(cat);
     }
 
 }

@@ -2,7 +2,15 @@ package com.example.webservice.controller;
 
 import com.example.webservice.TpWsApplication;
 import com.example.webservice.connection.ConnectDB;
+import com.example.webservice.exception.ResourceNotFoundException;
+import com.example.webservice.model.Admin;
+import com.example.webservice.model.Rechargement;
 import com.example.webservice.model.Utilisateur;
+import com.example.webservice.repository.AdminRepository;
+import com.example.webservice.repository.RechargementRepository;
+import com.example.webservice.repository.UtilisateurRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
@@ -10,14 +18,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins= "*", maxAge = 3600)
 @RequestMapping("/api/v1/utilisateur")
 public class UtilisateurController {
+    @Autowired
+    private UtilisateurRepository use;
 
 
-    @GetMapping("/login/{email}/{mdp}")
+   /* @GetMapping("/login/{email}/{mdp}")
     public Utilisateur checkCandidat(@PathVariable String email,@PathVariable String mdp) throws SQLException {
         Utilisateur utilisateur =null;
 
@@ -65,5 +76,19 @@ public class UtilisateurController {
             if (stmt!=null) stmt.close();
         }
         return utilisateur;
+    }*/
+   @PostMapping("/login")
+    public ResponseEntity<Utilisateur> find(@RequestBody Utilisateur u)
+    {
+
+        Utilisateur a= use.findUtilisateurByEmailAndMdp(u.getEmail(),u.getMdp());
+        return ResponseEntity.ok(a);
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Utilisateur>> getAllUser() {
+        List<Utilisateur> cat= use.findAll();
+        return ResponseEntity.ok(cat);
+    }
+
 }

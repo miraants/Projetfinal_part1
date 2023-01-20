@@ -2,9 +2,14 @@ package com.example.webservice.controller;
 
 import com.example.webservice.TpWsApplication;
 import com.example.webservice.connection.ConnectDB;
+import com.example.webservice.exception.CategorieNotFoundException;
+import com.example.webservice.model.Participant_enchere;
 import com.example.webservice.model.Rechargement;
+import com.example.webservice.model.Utilisateur;
 import com.example.webservice.repository.RechargementRepository;
+import com.example.webservice.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
@@ -18,7 +23,35 @@ public class RechargementController {
     @Autowired
     private RechargementRepository rechargementRepository;
 
+    @Autowired
+    private UtilisateurRepository user;
 
+    @PostMapping("/insert")
+    public Rechargement createRechargement(@RequestBody Rechargement rechargement){
+        return rechargementRepository.save(rechargement);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Rechargement>> getAllRechargement() {
+        List<Rechargement> cat= rechargementRepository.findAll();
+        return ResponseEntity.ok(cat);
+    }
+
+    @GetMapping("/list/{id}")
+    public String updateRechargement(@PathVariable("id") int id_utilisateur){
+        Rechargement r=rechargementRepository.findTopById_utilisateurOrderById_rechargementDesc(id_utilisateur);
+        Utilisateur u=user.findById(id_utilisateur).orElseThrow(() -> new CategorieNotFoundException(("Categorie not exist with id :" + id_utilisateur)));
+        u.setValeur(u.getValeur()+r.getValeur());
+        user.save(u);
+        r.setStatut(1);
+        rechargementRepository.save(r);
+        String text="updateeed";
+        return text;
+
+    }
+
+
+/*
     @GetMapping
     public List<Rechargement> getAllRechargement(){
         return rechargementRepository.findAll();
@@ -99,6 +132,6 @@ public class RechargementController {
         }
         return null;
     }
-
+*/
 
 }

@@ -1,6 +1,8 @@
 package com.example.webservice.model;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +14,11 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 public class
 
 Participant_enchere {
+    @Id
     private Integer id_utilisateur;
     private Integer id_manao_enchere;
     private Double prix;

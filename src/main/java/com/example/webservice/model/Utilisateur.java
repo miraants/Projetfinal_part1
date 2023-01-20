@@ -9,11 +9,12 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@Entity
 @AllArgsConstructor
 
 public class Utilisateur {
 
+    @Id
     private int id_utilisateur;
 
     @Column(name = "nom")

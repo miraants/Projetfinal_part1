@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins= "*", maxAge = 3600)
@@ -19,7 +20,7 @@ public class CategorieController {
     @Autowired
     private CategorieRepository categorieRepository;
 
-    @GetMapping("/list")
+   /* @GetMapping("/list")
     public ArrayList<Categorie> getCategorie() throws SQLException {
         ArrayList<Categorie> categorie = new ArrayList<>();
         ConnectDB postgreSQL = TpWsApplication.getPostgreSQL();
@@ -36,6 +37,7 @@ public class CategorieController {
             }
         }
         catch(Exception e){
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
         finally {
@@ -66,10 +68,45 @@ public class CategorieController {
         return null;
     }
 
-    @GetMapping("{id}")
+
+     /*@PutMapping("{id}")
+    public ResponseEntity<Rechargement> updateRecharge(@PathVariable Integer id){
+        Rechargement updateRechargement= rechargementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rechargement not exist with id: " + id));
+
+        updateRechargement.setStatut(1);
+
+        rechargementRepository.save(updateRechargement);
+        return ResponseEntity.ok(updateRechargement);
+
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<Utilisateur> updateUser(@PathVariable long id,int a){
+        Utilisateur updateUtilisateur= utilisateurRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rechargement not exist with id: " + id));
+        Rechargement updateRechargement= rechargementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rechargement not exist with id: " + id));
+
+        updateUtilisateur.setValeur(updateUtilisateur.getValeur()+updateRechargement.getValeur());
+
+        utilisateurRepository.save(updateUtilisateur);
+        return ResponseEntity.ok(updateUtilisateur);
+    }*/
+
+    @GetMapping("/list/{id}")
     public ResponseEntity<Categorie> getCategorieById(@PathVariable Integer id){
         Categorie r=categorieRepository.findById(id).orElseThrow(() -> new CategorieNotFoundException(("Categorie not exist with id :" + id)));
         return ResponseEntity.ok(r);
+    }
+    @GetMapping("/list")
+    public ResponseEntity <List<Categorie>> getAllCategorie() {
+        List<Categorie> cat= categorieRepository.findAll();
+        return ResponseEntity.ok(cat);
+    }
+    @PostMapping("/save")
+    public ResponseEntity save(@RequestBody Categorie c){
+        categorieRepository.save(c);
+        return ResponseEntity.ok("success");
     }
 
 }

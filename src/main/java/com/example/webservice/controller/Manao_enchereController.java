@@ -2,18 +2,28 @@ package com.example.webservice.controller;
 
 import com.example.webservice.TpWsApplication;
 import com.example.webservice.connection.ConnectDB;
+import com.example.webservice.exception.CategorieNotFoundException;
+import com.example.webservice.model.Categorie;
 import com.example.webservice.model.Manao_enchere;
+import com.example.webservice.repository.HistoriqueRepository;
+import com.example.webservice.repository.Manao_enchereRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins= "*", maxAge = 3600)
 @RequestMapping("/api/v1/manao_enchere")
 public class Manao_enchereController {
 
-    @GetMapping("/list")
+    @Autowired
+    private Manao_enchereRepository manaoEnchere;
+
+   /*  @GetMapping("/list")
     public ArrayList<Manao_enchere> getManao_enchere() throws SQLException {
         ArrayList<Manao_enchere> manao_enchere = new ArrayList<>();
         ConnectDB postgreSQL = TpWsApplication.getPostgreSQL();
@@ -57,6 +67,17 @@ public class Manao_enchereController {
             if (stmt!=null) stmt.close();
         }
         return null;
+    }*/
+
+    @GetMapping("/list/{id}")
+    public ResponseEntity<Manao_enchere> getManaoEnchereId(@PathVariable Integer id){
+        Manao_enchere r=manaoEnchere.findById(id).orElseThrow(() -> new CategorieNotFoundException(("Categorie not exist with id :" + id)));
+        return ResponseEntity.ok(r);
+    }
+    @GetMapping("/list")
+    public ResponseEntity <List<Manao_enchere>> getAllCategorie() {
+        List<Manao_enchere> cat= manaoEnchere.findAll();
+        return ResponseEntity.ok(cat);
     }
 
 

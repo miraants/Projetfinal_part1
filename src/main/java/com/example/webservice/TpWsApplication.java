@@ -11,9 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@SpringBootApplication
-public class TpWsApplication implements CommandLineRunner {
-	private static ConnectDB PostgreSQL;
+
+public class TpWsApplication{
+	/*private static ConnectDB PostgreSQL;
 //	private static ConnectDB SQLServer;
 
 	public static ConnectDB getPostgreSQL() {
@@ -46,10 +46,11 @@ public class TpWsApplication implements CommandLineRunner {
 			if(PostgreSQL!=null) System.out.println("Connected to PostgreSQL - Enchere");
 		}
 		catch(SQLException sqle){
+			sqle.printStackTrace();
 			System.out.println("Exception_"+sqle.getMessage());
 		}
 		Connection connection = PostgreSQL.getConnection();
 //		Connection connectionSqlServer = SQLServer.getConnection();
 		System.out.println("Web Services is ready ...");
-	}
+	}*/
 }
