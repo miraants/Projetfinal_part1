@@ -36,6 +36,8 @@ public class CategorieController {
             }
         }
         catch(Exception e){
+                        e.printStackTrace();
+
             System.out.println(e.getMessage());
         }
         finally {
