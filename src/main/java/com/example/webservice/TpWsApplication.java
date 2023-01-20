@@ -46,6 +46,7 @@ public class TpWsApplication implements CommandLineRunner {
 			if(PostgreSQL!=null) System.out.println("Connected to PostgreSQL - Enchere");
 		}
 		catch(SQLException sqle){
+			sqle.printStackTrace();
 			System.out.println("Exception_"+sqle.getMessage());
 		}
 		Connection connection = PostgreSQL.getConnection();
